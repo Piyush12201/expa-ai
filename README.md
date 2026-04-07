@@ -127,3 +127,16 @@ GitHub Actions workflow in `.github/workflows/ci.yml` runs:
 npm run build
 npm run start
 ```
+
+## Vercel Deployment Checklist
+
+1. Root Directory: `./`
+2. Framework Preset: `Next.js`
+3. Build Command: `npm run vercel-build`
+4. Add environment variables in Vercel Project Settings:
+	- `DATABASE_URL`
+	- `DIRECT_URL` (recommended)
+	- `JWT_SECRET`
+	- `GROQ_API_KEY`
+5. Redeploy with "Clear build cache" enabled if you had previous failed builds.
+6. If deploy still fails, verify Neon credentials and that the connection string includes `sslmode=require`.
