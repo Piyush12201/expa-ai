@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(cuid())
+  name         String
+  email        String      @unique
+  passwordHash String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  workspaces   Workspace[]
+  reports      Report[]
+}
+
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reports   Report[]
+
+  @@index([userId])
+}
+
+model Report {
+  id          String       @id @default(cuid())
+  userId      String
+  workspaceId String
+  idea        String
+  location    String
+  resultJson  String
+  createdAt   DateTime     @default(now())
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  sharedLink  SharedReport?
+  actionItems ActionItem[]
+  financials  FinancialProjection?
+  positioning PositioningMap?
+  swot        SWOTAnalysis?
+  checklist   InvestorChecklist?
+  businessPlan BusinessPlan?
+
+  @@index([userId, workspaceId])
+  @@index([createdAt])
+}
+
+model SharedReport {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  reportId  String   @unique
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
+
+model ActionItem {
+  id        String   @id @default(cuid())
+  reportId  String
+  title     String
+  description String
+  priority  String   @default("medium")
+  dueDate   DateTime?
+  completed Boolean  @default(false)
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId])
+  @@index([dueDate])
+}
+
+model FinancialProjection {
+  id        String   @id @default(cuid())
+  reportId  String   @unique
+  year1Revenue Float
+  year1Costs Float
+  year2Revenue Float
+  year2Costs Float
+  year3Revenue Float
+  year3Costs Float
+  year4Revenue Float
+  year4Costs Float
+  year5Revenue Float
+  year5Costs Float
+  breakevenMonth Int
+  impliedValuation Float
+  roisPercentage Float
+  monthlyProjections String // JSON array of {month, revenue, costs, cashFlow}
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
+
+model PositioningMap {
+  id        String   @id @default(cuid())
+  reportId  String   @unique
+  marketMaturity Float  // 0-10
+  differentiation Float // 0-10
+  quadrant  String   // "established", "innovator", "niche", "disruption"
+  competitors String // JSON array of {name, maturity, differentiation}
+  positioning String // JSON with market position description
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
+
+model SWOTAnalysis {
+  id        String   @id @default(cuid())
+  reportId  String   @unique
+  strengths String // JSON array
+  weaknesses String // JSON array
+  opportunities String // JSON array
+  threats   String // JSON array
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
+
+model InvestorChecklist {
+  id        String   @id @default(cuid())
+  reportId  String   @unique
+  checklistJson String // JSON array with {category, items: [{item, status, completionPercent}]}
+  overallReadinessPercent Int @default(0)
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
+
+model BusinessPlan {
+  id        String   @id @default(cuid())
+  reportId  String   @unique
+  title     String
+  executiveSummary String
+  content   String // Full business plan markdown/HTML
+  section1_Executive String
+  section2_Market String
+  section3_Strategy String
+  section4_Financial String
+  section5_Implementation String
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,7 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Expa AI logo">
+  <rect width="512" height="512" fill="#1e1d5a"/>
+  <path d="M256 20L456 135V377L256 492L56 377V135L256 20Z" fill="none" stroke="#f3f4f7" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M165 150L226 186V441L165 405V150Z" fill="#e7e7ea"/>
+  <path d="M241 136L359 206V307L241 377V301L300 265L241 229V136Z" fill="#e7e7ea"/>
+  <path d="M241 229L299 264L241 300V229Z" fill="#1e1d5a"/>
+</svg>
