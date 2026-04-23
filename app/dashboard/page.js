@@ -17,12 +17,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { TabNav } from "./components/TabNav";
-import { FinancialDashboard } from "./components/FinancialDashboard";
-import { ActionItemsTracker } from "./components/ActionItemsTracker";
-import { SWOTandPositioning } from "./components/SWOTandPositioning";
-import { InvestorReadinessChecklist } from "./components/InvestorReadinessChecklist";
-import { BusinessPlanViewer } from "./components/BusinessPlanViewer";
+import { TabNav } from "../components/TabNav";
+import { FinancialDashboard } from "../components/FinancialDashboard";
+import { ActionItemsTracker } from "../components/ActionItemsTracker";
+import { SWOTandPositioning } from "../components/SWOTandPositioning";
+import { InvestorReadinessChecklist } from "../components/InvestorReadinessChecklist";
+import { BusinessPlanViewer } from "../components/BusinessPlanViewer";
 
 const initialResult = {
   headline: "Strategic market snapshot",
